@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Student Attendance Management System">
+  <title>AttendEase | Student Attendance</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">A</div>
+        <div><strong>AttendEase</strong><span>ATTENDANCE PORTAL</span></div>
+      </div>
+      <div class="nav-label">MENU</div>
+      <nav class="nav">
+        <button class="nav-link active" data-page="dashboard"><span class="nav-icon">▦</span>Dashboard</button>
+        <button class="nav-link" data-page="students"><span class="nav-icon">♙</span>Students</button>
+        <button class="nav-link" data-page="attendance"><span class="nav-icon">✓</span>Take Attendance</button>
+        <button class="nav-link" data-page="records"><span class="nav-icon">▤</span>Attendance Records</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-card"><div class="help-icon">?</div><strong>Need a hand?</strong><p>Manage your class attendance with ease.</p></div>
+        <div class="profile"><div class="avatar">AD</div><div><strong>Administrator</strong><span>Admin account</span></div></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+        <div class="breadcrumb">Workspace <span>/</span> <strong id="breadcrumb">Dashboard</strong></div>
+        <div class="top-actions"><span class="today-label" id="todayLabel"></span><div class="top-avatar">AD</div></div>
+      </header>
+
+      <section class="page active" id="page-dashboard">
+        <div class="page-heading">
+          <div><p class="eyebrow">OVERVIEW</p><h1>Dashboard</h1><p class="muted">Here's what's happening with your class today.</p></div>
+          <button class="primary-btn" data-go="attendance">＋ Take attendance</button>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-top"><span>Total students</span><span class="stat-icon blue">♙</span></div><strong id="totalStat">0</strong><small>Registered students</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Present today</span><span class="stat-icon green">✓</span></div><strong id="presentStat">0</strong><small>Marked present</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Absent today</span><span class="stat-icon red">×</span></div><strong id="absentStat">0</strong><small>Marked absent</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Attendance rate</span><span class="stat-icon purple">％</span></div><strong id="rateStat">0%</strong><small>Of marked students</small></article>
+        </div>
+        <div class="content-grid">
+          <article class="panel attendance-panel">
+            <div class="panel-heading"><div><h2>Today's attendance</h2><p class="muted">A quick look at today's class status</p></div><button class="text-btn" data-go="records">View records →</button></div>
+            <div class="progress-summary"><div><strong id="progressRate">0%</strong><span>attendance rate</span></div><div class="progress-track"><div id="progressBar"></div></div></div>
+            <div class="legend"><span><i class="dot present-dot"></i>Present <b id="presentLegend">0</b></span><span><i class="dot absent-dot"></i>Absent <b id="absentLegend">0</b></span><span><i class="dot unmarked-dot"></i>Unmarked <b id="unmarkedLegend">0</b></span></div>
+          </article>
+          <article class="panel date-panel"><div class="date-icon">▣</div><p class="muted">TODAY</p><h2 id="dateHeading">—</h2><p class="muted">Keep your attendance records up to date.</p><button class="secondary-btn" data-go="attendance">Mark attendance</button></article>
+        </div>
+        <article class="panel table-panel">
+          <div class="panel-heading"><div><h2>Recent students</h2><p class="muted">Recently added to your class</p></div><button class="text-btn" data-go="students">View all →</button></div>
+          <div class="table-wrap"><table><thead><tr><th>STUDENT</th><th>STUDENT ID</th><th>BRANCH</th><th>SEMESTER</th></tr></thead><tbody id="recentStudents"></tbody></table></div>
+          <div class="empty-state" id="recentEmpty">No students added yet. Add students to get started.</div>
+        </article>
+      </section>
+
+      <section class="page" id="page-students">
+        <div class="page-heading"><div><p class="eyebrow">CLASS DIRECTORY</p><h1>Students</h1><p class="muted">Add, search and manage your student list.</p></div><button class="primary-btn" id="addStudentBtn">＋ Add student</button></div>
+        <article class="panel table-panel">
+          <div class="toolbar"><div><h2>All students <span class="count-pill" id="studentCount">0</span></h2><p class="muted">Your registered class members</p></div><input class="search-input" id="studentSearch" type="search" placeholder="⌕  Search name or ID..."></div>
+          <div class="table-wrap"><table><thead><tr><th>STUDENT</th><th>STUDENT ID</th><th>BRANCH</th><th>SEMESTER</th><th class="align-right">ACTION</th></tr></thead><tbody id="studentsTable"></tbody></table></div>
+          <div class="empty-state" id="studentsEmpty">No students found. Add your first student.</div>
+        </article>
+      </section>
+
+      <section class="page" id="page-attendance">
+        <div class="page-heading"><div><p class="eyebrow">DAILY REGISTER</p><h1>Take attendance</h1><p class="muted">Choose a date and mark each student's status.</p></div><div class="date-select"><label for="attendanceDate">ATTENDANCE DATE</label><input type="date" id="attendanceDate"></div></div>
+        <article class="panel table-panel">
+          <div class="toolbar"><div><h2>Class register</h2><p class="muted" id="attendanceSub">Mark students present or absent.</p></div><div class="attendance-actions"><button class="secondary-btn small-btn" id="allPresentBtn">Mark all present</button><button class="primary-btn small-btn" id="saveAttendanceBtn">Save attendance</button></div></div>
+          <div class="attendance-summary"><span><i class="dot present-dot"></i>Present: <b id="markedPresent">0</b></span><span><i class="dot absent-dot"></i>Absent: <b id="markedAbsent">0</b></span><span><i class="dot unmarked-dot"></i>Unmarked: <b id="markedUnmarked">0</b></span></div>
+          <div class="table-wrap"><table><thead><tr><th>STUDENT</th><th>STUDENT ID</th><th>BRANCH</th><th>STATUS</th></tr></thead><tbody id="attendanceTable"></tbody></table></div>
+          <div class="empty-state" id="attendanceEmpty">Add students before taking attendance.</div>
+        </article>
+      </section>
+
+      <section class="page" id="page-records">
+        <div class="page-heading"><div><p class="eyebrow">ATTENDANCE HISTORY</p><h1>Attendance records</h1><p class="muted">Review saved attendance by date.</p></div><div class="date-select"><label for="recordDate">FILTER BY DATE</label><input type="date" id="recordDate"></div></div>
+        <article class="panel table-panel">
+          <div class="toolbar"><div><h2 id="recordsTitle">Saved records</h2><p class="muted">Attendance entries saved in this browser</p></div><button class="secondary-btn small-btn" id="clearFilterBtn">Clear filter</button></div>
+          <div class="table-wrap"><table><thead><tr><th>DATE</th><th>STUDENT</th><th>STUDENT ID</th><th>STATUS</th></tr></thead><tbody id="recordsTable"></tbody></table></div>
+          <div class="empty-state" id="recordsEmpty">No attendance records yet.</div>
+        </article>
+      </section>
+      <footer>AttendEase <span>•</span> Student Attendance Management System</footer>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="studentModal" aria-hidden="true">
+    <form class="modal" id="studentForm">
+      <div class="modal-heading"><div><p class="eyebrow">STUDENT DIRECTORY</p><h2 id="modalTitle">Add student</h2></div><button type="button" class="close-btn" id="closeModal" aria-label="Close">×</button></div>
+      <label>Full name<input id="studentName" type="text" placeholder="e.g. Aditi Sharma" maxlength="60" required></label>
+      <label>Student ID<input id="studentId" type="text" placeholder="e.g. CSE26001" maxlength="20" required></label>
+      <div class="form-row"><label>Branch<input id="studentBranch" type="text" placeholder="e.g. CSE" maxlength="30" required></label><label>Semester<select id="studentSemester" required><option value="">Select</option><option>1st</option><option>2nd</option><option>3rd</option><option>4th</option><option>5th</option><option>6th</option><option>7th</option><option>8th</option></select></label></div>
+      <p class="form-error" id="formError"></p>
+      <div class="modal-actions"><button type="button" class="secondary-btn" id="cancelModal">Cancel</button><button type="submit" class="primary-btn">Save student</button></div>
+    </form>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
